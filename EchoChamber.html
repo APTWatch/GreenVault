@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Chamber</title>
+
+    <style>
+        body {
+            font-family: monospace;
+            background: #121212;
+            color: #00ff00;
+            display: flex;
+            justify-content: center;
+            padding: 8rem;
+        }
+
+        .container {
+            border: 1px solid #00ff00;
+            padding: 2rem;
+            width: 600px;
+            background: #1e1e1e;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px dashed #00ff00;
+            background: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Echo Chamber</h1>
+        <p>by GreenVault</p>
+
+        <p>
+            Send a message using the URL parameter:
+            <br>
+            <code>?msg=Hello</code>
+        </p>
+
+        <p>
+            Hint: The page displays your message as **HTML**.
+        </p>
+
+        <div id="output"></div>
+
+    </div>
+
+    <script>
+
+  
+        async function revealFlag() {
+            try {
+                const response = await fetch("/api/flag", { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error("Unable to load flag");
+                }
+
+                const data = await response.json();
+                alert("Flag: " + (data.flag || "Unavailable"));
+            } catch (error) {
+                alert("Flag server is unavailable.");
+            }
+        }
+
+     
+        const params = new URLSearchParams(window.location.search);
+        const msg = params.get("msg");
+
+        const output = document.getElementById("output");
+
+        if (msg) {
+            output.innerHTML = "You said: " + msg;
+        } else {
+            output.innerHTML = "Waiting for input...";
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GreenVault - Subscriber Portal</title> 
+    <style>
+        body { font-family: Courier, monospace; background: #0a0a0a; color: #00ff00; padding: 50px; }
+        .profile { border: 1px solid #00ff00; padding: 20px; max-width: 400px; background: #111; }
+        .warning { color: #ff4444; font-size: 0.9em; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <h2>GreenVault: Account API</h2> 
+    <p class="warning">CONFIDENTIAL: Do not share your profile link.</p>
+    
+    <div class="profile" id="profile-card">
+        <p>Loading account details...</p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let userId = urlParams.get('id');
+
+        if (!userId) {
+            userId = '1';
+            window.history.replaceState(null, null, "?id=1");
+        }
+
+        fetch(`/data/users/user_${userId}.json`)
+            .then(response => {
+                if (!response.ok) throw new Error("Account not found");
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('profile-card').innerHTML = `
+                    <p><strong>Username:</strong> ${data.username}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <p><strong>Password:</strong> ${data.password}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('profile-card').innerHTML = `
+                    <p style="color: red;">Error: Account ID ${userId} does not exist or access is denied.</p>
+                `;
+            });
+    </script>
+</body>
+</html>

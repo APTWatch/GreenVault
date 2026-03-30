@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenVault</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .vault-box {
+            border: 2px solid #00ff00;
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ff00;
+        }
+        input {
+            background-color: black;
+            color: #00ff00;
+            border: 1px solid #ffffff;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        button {
+            background-color: #00ff00;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #000000;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vault-box">
+        <h2>GreenVault</h2>
+        <p>Enter the master password to access the flag.</p>
+        <input type="password" id="passInput" placeholder="Password...">
+        <button onclick="verifyPassword()">Unlock</button>
+        <p>by zhinon</p>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        function verifyPassword() {
+
+            let userInput = document.getElementById('passInput').value;
+            
+            let transformedInput = btoa(userInput.split('').reverse().join(''));
+            
+            const secretToken = "Z2FsZl90ZXJjZXNfeXJldg==";
+
+            if (transformedInput === secretToken) {
+                document.getElementById('message').style.color = "#00ff00";
+                document.getElementById('message').innerText = "Access Granted! MMDC{" + userInput +"}";
+            } else {
+                document.getElementById('message').style.color = "red";
+                document.getElementById('message').innerText = "Access Denied. Intrusion logged.";
+            }
+        }
+    </script>
+
+</body>
+</html>
